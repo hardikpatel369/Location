@@ -15,6 +15,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -34,11 +35,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     GoogleMap map;
     SupportMapFragment mapFragment;
     SearchView searchView;
+    TextView tv_lat, tv_longi;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        tv_lat = findViewById(R.id.tv_lat);
+        tv_longi = findViewById(R.id.tv_longi);
 
         searchView = findViewById(R.id.search);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -61,6 +66,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     map.addMarker(new MarkerOptions().position(latLng).title(location));
                     map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
                     Log.d("--abc--", "onQueryTextSubmit: "+latLng);
+
+                    double latitude = address.getLatitude();
+                    double longitude = address.getLongitude();
+
+                    tv_lat.setText("latitude : "+ latitude);
+                    tv_longi.setText("longitude : "+ longitude);
                 }
                 return false;
             }
@@ -101,6 +112,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 map.moveCamera(center);
                 map.animateCamera(zoom);
+
+//                tv_lat.setText("latitude : "+ location.getLatitude());
+//                tv_longi.setText("longitude : "+ location.getLongitude());
 
             }
         });
